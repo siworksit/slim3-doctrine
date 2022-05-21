@@ -17,11 +17,11 @@
         }
     ],
     "require": {
-        "php": "7.4",
+        "php": "^7.4",
         "symfony/validator": "v5.4.8",
         "monolog/monolog": "^2.6.0",
         "doctrine/orm": "^2.12.2",
-        "doctrine/common": "^2.13.3",
+        "doctrine/common": "^3.3.0",
         "doctrine/cache": "^1.13.0",
         "doctrine/doctrine-bundle": "^2.6.3",
         "doctrine/migrations": "^2.3.5",
