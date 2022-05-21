@@ -1,0 +1,47 @@
+{
+    "name": "siworks/slim3-doctrine",
+    "description": "Simple implementation of Slim3 with Doctrine",
+    "keywords": ["microframework", "slim3", "doctrine", "rest", "router", "psr7"],
+    "homepage": "https://github.com/siworksit/slim3-doctrine.git",
+    "license": "Apache-2.0",
+    "authors": [
+        {
+            "name": "Rafael N. Garbinatto",
+            "email": "rafael@siworks.com.br",
+            "homepage": "http://www.siworks.com.br/"
+        },
+        {
+            "name": "Diego B. Pimentel",
+            "email": "diego@siworks.com.br",
+            "homepage": "http://www.siworks.com.br/"
+        }
+    ],
+    "require": {
+        "php": "^7.2",
+        "symfony/validator": "5.0.8",
+        "monolog/monolog": "^2.0.2",
+        "doctrine/orm": "^2.7.2",
+        "doctrine/common": "^2.11.0",
+        "doctrine/cache": "^1.8.2",
+        "doctrine/doctrine-bundle": "^2.0.8",
+        "doctrine/migrations": "^2.1.0",
+        "doctrine/doctrine-migrations-bundle": "^2.1.2",
+        "ramsey/uuid-doctrine": "^1.6.0"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^6.5"
+    },
+    "autoload": {
+        "psr-4": {
+            "Siworks\\Slim\\Doctrine\\": "src/Doctrine/",
+            "Siworks\\Slim\\Example\\": "src/Example/",
+            "Siworks\\Slim\\Tests\\": "tests"
+       }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Siworks\\Slim\\Tests\\": "tests"
+        }
+    }
+}
+

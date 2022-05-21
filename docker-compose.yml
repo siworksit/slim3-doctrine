@@ -1,0 +1,18 @@
+version: '2'
+services:
+  phpunit:
+    image: phpunit/phpunit
+    network_mode: host
+    command: --configuration phpunit.xml --colors --coverage-html coverage
+    tty: true
+    volumes:
+      - ./:/app
+    working_dir: /app
+
+  composer:
+    image: composer/composer
+    network_mode: host
+    command: install --ignore-platform-reqs --prefer-dist -o
+    volumes:
+      - ~/.ssh:/root/.ssh
+      - ./:/app

@@ -1,0 +1,11 @@
+/vendor/
+/coverage/
+/logs/*
+\.idea/
+*.log
+data/
+nginx\.conf
+composer\.phar
+Dockerfile-dev
+public/supervisord\.pid
+composer.lock
