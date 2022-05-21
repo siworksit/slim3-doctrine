@@ -17,19 +17,19 @@
         }
     ],
     "require": {
-        "php": "^7.2",
-        "symfony/validator": "5.0.8",
-        "monolog/monolog": "^2.0.2",
-        "doctrine/orm": "^2.7.2",
-        "doctrine/common": "^2.11.0",
-        "doctrine/cache": "^1.8.2",
-        "doctrine/doctrine-bundle": "^2.0.8",
-        "doctrine/migrations": "^2.1.0",
-        "doctrine/doctrine-migrations-bundle": "^2.1.2",
-        "ramsey/uuid-doctrine": "^1.6.0"
+        "php": "7.4",
+        "symfony/validator": "v5.4.8",
+        "monolog/monolog": "^2.6.0",
+        "doctrine/orm": "^2.12.2",
+        "doctrine/common": "^2.13.3",
+        "doctrine/cache": "^1.13.0",
+        "doctrine/doctrine-bundle": "^2.6.3",
+        "doctrine/migrations": "^2.3.5",
+        "doctrine/doctrine-migrations-bundle": "^2.2.3",
+        "ramsey/uuid-doctrine": "^1.8.1"
     },
     "require-dev": {
-        "phpunit/phpunit": "^6.5"
+        "phpunit/phpunit": "^9.5.20"
     },
     "autoload": {
         "psr-4": {
