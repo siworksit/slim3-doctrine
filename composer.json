@@ -27,7 +27,8 @@
         "doctrine/migrations": "^2.3.5",
         "doctrine/doctrine-migrations-bundle": "^2.2.3",
         "ramsey/uuid-doctrine": "^1.8.1",
-        "ocramius/generated-hydrator": "^4.1"
+        "ocramius/generated-hydrator": "^4.1",
+        "doctrine/doctrine-module": "*"
     },
     "require-dev": {
         "phpunit/phpunit": "^9.5.20"
