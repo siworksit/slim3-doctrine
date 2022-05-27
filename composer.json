@@ -19,7 +19,7 @@
     "require": {
         "php": "^7.4",
         "symfony/validator": "v5.4.8",
-        "symfony/serializer-pack": "v6.1.0",
+        "symfony/serializer-pack": "v1.1.0",
         "monolog/monolog": "^2.6.0",
         "doctrine/orm": "^2.12.2",
         "doctrine/common": "^3.3.0",
