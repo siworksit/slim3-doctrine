@@ -73,7 +73,6 @@ trait ObjectHelpers
         {
             if(is_object($val))
             {
-
                 if($val instanceof \DateTime)
                 {
                     $val->format('Y-m-d H:i:s');
