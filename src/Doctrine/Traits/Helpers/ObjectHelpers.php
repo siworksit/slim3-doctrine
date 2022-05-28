@@ -9,13 +9,6 @@
 namespace Siworks\Slim\Doctrine\Traits\Helpers;
 
 use GeneratedHydrator\Configuration;
-use Symfony\Component\Serializer\Encoder\JsonEncode;
-use Symfony\Component\Serializer\Encoder\JsonEncoder;
-use Symfony\Component\Serializer\Normalizer\AbstractObjectNormalizer;
-use Symfony\Component\Serializer\Normalizer\ConstraintViolationListNormalizer;
-use Symfony\Component\Serializer\Normalizer\DateTimeNormalizer;
-use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
-use Symfony\Component\Serializer\Serializer;
 
 trait ObjectHelpers
 {
@@ -62,7 +55,7 @@ trait ObjectHelpers
         return $arr;
     }
 
-    public function extractObject($obj = null)
+    public function extractObject($obj = null, $depht = 2, $position = 0)
     {
 
         $obj = (is_null($obj)) ? $this : $obj;
@@ -73,6 +66,7 @@ trait ObjectHelpers
         {
             if(is_object($val))
             {
+
                 if($val instanceof \DateTime)
                 {
                     $val->format('Y-m-d H:i:s');
@@ -80,9 +74,13 @@ trait ObjectHelpers
                 }
                 else if($val instanceof \Doctrine\ORM\PersistentCollection)
                 {
-                    foreach($val as $index => $value)
-                    {
-                        $res[$key][] = $value->extractObject($value);
+                    $position++;
+                    if($position <= $depht){
+
+                        foreach($val as $index => $value)
+                        {
+                            $res[$key][] = $value->extractObject($value, $depht, $position);
+                        }
                     }
                 }
                 else
@@ -90,7 +88,7 @@ trait ObjectHelpers
                     if($val instanceof \Ramsey\Uuid\Lazy\LazyUuidFromString){
                         $res[$key] = $val->__toString();
                     }else{
-                        $res[$key] = self::extractObject($val);
+                        $res[$key] = $val->extractObject($val);
                     }
                 }
             }else{
