@@ -9,6 +9,13 @@
 namespace Siworks\Slim\Doctrine\Traits\Helpers;
 
 use GeneratedHydrator\Configuration;
+use Symfony\Component\Serializer\Encoder\JsonEncode;
+use Symfony\Component\Serializer\Encoder\JsonEncoder;
+use Symfony\Component\Serializer\Normalizer\AbstractObjectNormalizer;
+use Symfony\Component\Serializer\Normalizer\ConstraintViolationListNormalizer;
+use Symfony\Component\Serializer\Normalizer\DateTimeNormalizer;
+use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
+use Symfony\Component\Serializer\Serializer;
 
 trait ObjectHelpers
 {
@@ -40,7 +47,7 @@ trait ObjectHelpers
                 }else{
                     $arr[$key] = $this->getId();
                 }
-                
+
             }
 
             if(count($filterKeys) > 0)
@@ -57,34 +64,41 @@ trait ObjectHelpers
 
     public function extractObject($obj = null)
     {
-        $obj = (is_null($obj)) ? $this : $obj;
 
+        $obj = (is_null($obj)) ? $this : $obj;
         $arr = (is_object($obj)) ? $this->getHydrator()->extract($obj) : $obj;
 
+        $res =[];
         foreach ($arr as $key => $val)
         {
             if(is_object($val))
             {
+
                 if($val instanceof \DateTime)
                 {
                     $val->format('Y-m-d H:i:s');
-                    $arr[$key] =  $val->format('Y-m-d H:i:s');
+                    $res[$key] =  $val->format('Y-m-d H:i:s');
                 }
                 else if($val instanceof \Doctrine\ORM\PersistentCollection)
                 {
-                    $arr[$key] = $val->toArray();
-                    foreach($arr[$key] as $index => $value)
+                    foreach($val as $index => $value)
                     {
-                        $arr[$key][$index] = $value->toArray();
+                        $res[$key][] = $value->extractObject($value);
                     }
                 }
-                else if(is_object($val))
+                else
                 {
-                    $arr[$key] = $this->extractObject($val);
+                    if($val instanceof \Ramsey\Uuid\Lazy\LazyUuidFromString){
+                        $res[$key] = $val->__toString();
+                    }else{
+                        $res[$key] = self::extractObject($val);
+                    }
                 }
+            }else{
+                $res[$key] = $val;
             }
         }
-        return $arr;
+        return $res;
     }
 
     public function getHydrator()
