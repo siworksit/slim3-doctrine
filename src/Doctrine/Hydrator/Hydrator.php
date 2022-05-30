@@ -1,6 +1,6 @@
 <?php
     namespace Siworks\Slim\Doctrine\Hydrator;
-    use DoctrineModule\Stdlib\Hydrator\DoctrineObject;
+    use Doctrine\Laminas\Hydrator\DoctrineObject;
     use DateTime;
     class Hydrator extends DoctrineObject {
         protected function handleTypeConversions($value, $typeOfField) {
