@@ -55,7 +55,7 @@ trait ObjectHelpers
         return $arr;
     }
 
-    public function extractObject($obj = null, $depht = 1, $position = 0)
+    public function extractObject($obj = null, $depht = 2, $position = 0)
     {
 
         $obj = (is_null($obj)) ? $this : $obj;
