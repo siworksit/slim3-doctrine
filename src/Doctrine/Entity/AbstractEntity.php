@@ -40,6 +40,10 @@ Abstract class AbstractEntity
             {
                 return $this->$field;
             }
+            elseif($action == 'add')
+            {
+                return $this->$field;
+            }
             throw new \RuntimeException('The method is not defined. (ABSENT-11001exc)', 11001);
         }
         throw new \InvalidArgumentException("Attribute {$field} does not exist. (ABSENT-11002exc)", 11002);
