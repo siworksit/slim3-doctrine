@@ -55,7 +55,7 @@ trait ObjectHelpers
         return $arr;
     }
 
-    public function extractObject($obj = null, $depht = 2, $position = 0)
+    public function extractObject($obj = null, $depht = 1, $position = 0)
     {
 
         $obj = (is_null($obj)) ? $this : $obj;
@@ -69,18 +69,24 @@ trait ObjectHelpers
 
                 if($val instanceof \DateTime)
                 {
+                    if($position > 0){
+                        continue;
+                    }
+
                     $val->format('Y-m-d H:i:s');
                     $res[$key] =  $val->format('Y-m-d H:i:s');
                 }
                 else if($val instanceof \Doctrine\ORM\PersistentCollection)
                 {
-                    $position++;
-                    if($position <= $depht){
-
+                    $controll = $position;
+                    $controll++;
+                    if($controll <= $depht){
                         foreach($val as $index => $value)
                         {
-                            $res[$key][] = $value->extractObject($value, $depht, $position);
+                            $res[$key][] = $value->extractObject($value, $depht, $controll);
+
                         }
+                        $position = $position;
                     }
                 }
                 else
