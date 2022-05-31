@@ -259,7 +259,7 @@ Abstract Class AbstractModel implements IModel
 
                     if ( ! isset($association['targetToSourceKeyColumns'])  &&  ! isset($association["joinTable"]))
                     {
-                        throw new \Doctrine\ORM\ORMInvalidArgumentException("This relation is inversed (ABSMD-2006exc)", 2006);
+                        throw new \Doctrine\ORM\ORMInvalidArgumentException("This relation is inversed (ABSMD-7006)", 7006);
                     }
 
                     $assocAttr = array_keys($association['targetToSourceKeyColumns']);
@@ -315,7 +315,7 @@ Abstract Class AbstractModel implements IModel
         try{
             if ( ! is_numeric($value) )
             {
-                throw new \InvalidArgumentException("'{$value}' is not numeric (TKTMD0001exc)");
+                throw new \InvalidArgumentException("'{$value}' is not numeric (ABSMD7002)", 7002);
             }
 
             $obj = $this->entityManager->getRepository($name_space)
@@ -348,7 +348,7 @@ Abstract Class AbstractModel implements IModel
         try{
             if ( ! is_numeric($value) )
             {
-                throw new \InvalidArgumentException("'{$value}' is not numeric (TKTMD0001exc)");
+                throw new \InvalidArgumentException("'{$value}' is not numeric (ABSMD7001)", 7001);
             }
 
             $obj = $this->entityManager->getRepository($name_space)
