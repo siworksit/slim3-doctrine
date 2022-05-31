@@ -211,7 +211,7 @@ Abstract Class AbstractModel implements IModel
                 $objData = $obj->toArray();
                 $this->setData(array_filter(array_merge($objData, $this->getData())));
             }
-            
+
             $this->getHydrator()->hydrate($this->getData(), $obj);
             return $obj;
         }
@@ -241,7 +241,7 @@ Abstract Class AbstractModel implements IModel
     {
         $this->data = $data;
     }
-    
+
     public function getMetaData($classObject){
         return $this->entityManager->getClassMetadata($classObject);
     }
@@ -256,7 +256,8 @@ Abstract Class AbstractModel implements IModel
                 if($metaData->hasAssociation($attr))
                 {
                     $association = $metaData->getAssociationMapping($attr);
-                    if ( ! isset($association['targetToSourceKeyColumns']) )
+
+                    if ( ! isset($association['targetToSourceKeyColumns'])  &&  ! isset($association["joinTable"]))
                     {
                         throw new \Doctrine\ORM\ORMInvalidArgumentException("This relation is inversed (ABSMD-2006exc)", 2006);
                     }
@@ -270,8 +271,9 @@ Abstract Class AbstractModel implements IModel
                     }
                     else{
 
-                        $this->getData()[$attr] =  new ArrayCollection($this->entityManager->getRepository($association['targetEntity'])
-                            ->findBy(array($assocAttr[0] => $value)));
+                        $this->getData()[$attr] =  $this->entityManager->getRepository($association['targetEntity'])
+                            ->findBy(array("id" => $value));
+
                     }
                 }
             }
