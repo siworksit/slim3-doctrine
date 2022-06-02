@@ -145,7 +145,7 @@ Abstract class AbstractRestController
             {
                 foreach ($results['data'] as $key => $obj)
                 {
-                    $res['data'] [$key] = $obj->toArray();
+                    $res['data'] [$key] = $obj->extractObject($obj, 1);
                     $res['data'] [$key] ['_links']= [
                         "_self" => [
                             "href"      => "{$request->getUri()->getPath()}/{$obj->getId()}",
