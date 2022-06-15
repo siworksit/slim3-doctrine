@@ -262,10 +262,9 @@ Abstract Class AbstractModel implements IModel
                         throw new \Doctrine\ORM\ORMInvalidArgumentException("This relation is inversed (ABSMD-7006)", 7006);
                     }
 
-                    $assocAttr = array_keys($association['targetToSourceKeyColumns']);
-
                     if( $metaData->isAssociationWithSingleJoinColumn($attr) )
                     {
+                        $assocAttr = array_keys($association['targetToSourceKeyColumns']);
                         $obj = $this->getData()[$attr] =  $this->entityManager->getRepository($association['targetEntity'])
                             ->findOneBy(array($assocAttr[0] => $value));
 
