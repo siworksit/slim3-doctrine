@@ -276,7 +276,7 @@ Abstract Class AbstractModel implements IModel
                     }
 
                     if(is_null($objEntity) || count($objEntity) == 0){
-                        throw new InvalidArgumentException("{$attr} id is invalid : {$value} (ABSMD-7007)", 7007);
+                        throw new InvalidArgumentException("{$attr}: ids are invalid (ABSMD-7007)", 7007);
                     }
                     $this->getData()[$attr] = $objEntity;
                 }
