@@ -8,7 +8,7 @@
 
 namespace Siworks\Slim\Doctrine\Model;
 
-use Doctrine\ORM\ORMInvalidArgumentException;
+use InvalidArgumentException;
 use Doctrine\ORM\NoResultException;
 use Siworks\Slim\Doctrine\Traits\Helpers\ObjectHelpers;
 use Siworks\Slim\Doctrine\Hydrator\Hydrator;
@@ -259,7 +259,7 @@ Abstract Class AbstractModel implements IModel
 
                     if ( ! isset($association['targetToSourceKeyColumns'])  &&  ! isset($association["joinTable"]))
                     {
-                        throw new \Doctrine\ORM\ORMInvalidArgumentException("This relation is inversed (ABSMD-7006)", 7006);
+                        throw new InvalidArgumentException("This relation is inversed (ABSMD-7006)", 7006);
                     }
 
                     if( $metaData->isAssociationWithSingleJoinColumn($attr) )
@@ -276,7 +276,7 @@ Abstract Class AbstractModel implements IModel
                     }
 
                     if(is_null($obj) || count($obj) == 0){
-                        throw new \Doctrine\ORM\ORMInvalidArgumentException("{$attr} id is invalid : {$value} (ABSMD-7007)", 7007);
+                        throw new InvalidArgumentException("{$attr} id is invalid : {$value} (ABSMD-7007)", 7007);
                     }
                     $this->getData()[$attr] = $obj;
                 }

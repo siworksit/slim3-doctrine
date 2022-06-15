@@ -7,9 +7,8 @@ namespace Siworks\Slim\Doctrine\Repository;
  * Time: 16:54
  */
 
-use Doctrine\DBAL\Exception\InvalidArgumentException as InvalidArgumentException;
 use Doctrine\ORM\EntityNotFoundException;
-use Doctrine\ORM\ORMInvalidArgumentException as ORMInvalidArgumentException;
+use InvalidArgumentException;
 use Doctrine\ORM\Query;
 use Doctrine\ORM\QueryBuilder;
 use Doctrine\ORM\Tools\Pagination\Paginator;
@@ -94,7 +93,7 @@ Abstract class AbstractRepository extends EntityRepository
 
             if ( ! $this->checkAttrib([$this->_entityName, array_keys($filters)]) )
             {
-                throw new \Doctrine\ORM\ORMInvalidArgumentException ("Invalid attribute filter (ABSREP-1002exc)",1002);
+                throw new InvalidArgumentException ("Invalid attribute filter (ABSREP-1002exc)",1002);
             }
 
             $qb = $this->createQueryBuilder('i');
@@ -272,9 +271,9 @@ Abstract class AbstractRepository extends EntityRepository
 
             return $obj;
         }
-        catch(\Doctrine\ORM\ORMInvalidArgumentException $e) {
+        catch(InvalidArgumentException $e) {
 
-            throw \Doctrine\ORM\ORMInvalidArgumentException ($e->getMessage() . "(ABSREP-1005exc)", 1005);
+            throw InvalidArgumentException ($e->getMessage() . "(ABSREP-1005exc)", 1005);
         }
         catch(\Exception $e) {
             throw $e;
@@ -289,9 +288,9 @@ Abstract class AbstractRepository extends EntityRepository
 
             return $obj;
         }
-        catch(\Doctrine\ORM\ORMInvalidArgumentException $e)
+        catch(InvalidArgumentException $e)
         {
-            throw \Doctrine\ORM\ORMInvalidArgumentException ($e->getMessage() . "(ABSREP-1006exc)", 1006);
+            throw InvalidArgumentException ($e->getMessage() . "(ABSREP-1006exc)", 1006);
         }
         catch(\Exception $e)
         {
