@@ -271,9 +271,8 @@ Abstract class AbstractRepository extends EntityRepository
 
             return $obj;
         }
-        catch(InvalidArgumentException $e) {
-
-            throw InvalidArgumentException ($e->getMessage() . "(ABSREP-1005exc)", 1005);
+        catch(\InvalidArgumentException $e) {
+            throw \InvalidArgumentException ($e->getMessage() . "(ABSREP-1005exc)", 1005);
         }
         catch(\Exception $e) {
             throw $e;

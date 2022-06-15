@@ -265,20 +265,20 @@ Abstract Class AbstractModel implements IModel
                     if( $metaData->isAssociationWithSingleJoinColumn($attr) )
                     {
                         $assocAttr = array_keys($association['targetToSourceKeyColumns']);
-                        $obj = $this->getData()[$attr] =  $this->entityManager->getRepository($association['targetEntity'])
+                        $objEntity = $this->getData()[$attr] =  $this->entityManager->getRepository($association['targetEntity'])
                             ->findOneBy(array($assocAttr[0] => $value));
 
                     }
                     else{
 
-                        $this->getData()[$attr] =  $this->entityManager->getRepository($association['targetEntity'])
+                        $objEntity = $this->getData()[$attr] =  $this->entityManager->getRepository($association['targetEntity'])
                             ->findBy(array("id" => $value));
                     }
 
-                    if(is_null($obj) || count($obj) == 0){
+                    if(is_null($objEntity) || count($objEntity) == 0){
                         throw new InvalidArgumentException("{$attr} id is invalid : {$value} (ABSMD-7007)", 7007);
                     }
-                    $this->getData()[$attr] = $obj;
+                    $this->getData()[$attr] = $objEntity;
                 }
             }
             return $obj;
