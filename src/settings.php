@@ -15,10 +15,11 @@ return [
             ],
             'connection' => [
                 'driver'   => 'pdo_mysql',
-                'host'     => '172.19.0.2',
-                'dbname'   => 'billing',
-                'user'     => 'billing',
-                'password' => 'billing',
+                'host'     => 'localhost',
+                'dbname'   => 'example',
+                'user'     => 'example',
+                'password' => 'example',
+                'driverOptions'	=> array('1002'=> "SET NAMES 'UTF8' COLLATE 'utf8_general_ci'")
             ]
         ],
     ],
