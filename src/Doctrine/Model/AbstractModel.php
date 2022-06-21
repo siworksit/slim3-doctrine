@@ -9,6 +9,7 @@
 namespace Siworks\Slim\Doctrine\Model;
 
 use InvalidArgumentException;
+use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
 use Doctrine\ORM\NoResultException;
 use Siworks\Slim\Doctrine\Traits\Helpers\ObjectHelpers;
 use Siworks\Slim\Doctrine\Hydrator\Hydrator;
@@ -253,21 +254,21 @@ Abstract Class AbstractModel implements IModel
 
             foreach($this->getData() as $attr => $value)
             {
+
                 if($metaData->hasAssociation($attr))
                 {
                     $association = $metaData->getAssociationMapping($attr);
 
-                    if ( ! isset($association['targetToSourceKeyColumns'])  &&  ! isset($association["joinTable"]))
+                    if( $metaData->isSingleValuedAssociation($attr) )
                     {
-                        throw new InvalidArgumentException("This relation is inversed (ABSMD-7006)", 7006);
-                    }
-
-                    if( $metaData->isAssociationWithSingleJoinColumn($attr) )
-                    {
-                        $assocAttr = array_keys($association['targetToSourceKeyColumns']);
-                        $objEntity = $this->getData()[$attr] =  $this->entityManager->getRepository($association['targetEntity'])
-                            ->findOneBy(array($assocAttr[0] => $value));
-
+                        if(is_array($value)){
+                            $newObj = new $association['targetEntity']();
+                            $objEntity = $this->getHydrator()->hydrate($value, $newObj);
+                        }else if(is_string($value) || is_integer($value)){
+                            $assocAttr = array_keys($association['targetToSourceKeyColumns']);
+                            $objEntity = $this->getData()[$attr] =  $this->entityManager->getRepository($association['targetEntity'])
+                                ->findOneBy(array($assocAttr[0] => $value));
+                        }
                     }
                     else{
 
@@ -278,6 +279,7 @@ Abstract Class AbstractModel implements IModel
                     if(is_null($objEntity) || count($objEntity) == 0){
                         throw new InvalidArgumentException("{$attr}: ids are invalid (ABSMD-7007)", 7007);
                     }
+
                     $this->getData()[$attr] = $objEntity;
                 }
             }
@@ -360,7 +362,7 @@ Abstract Class AbstractModel implements IModel
 
             if( ! $obj instanceof $name_space  )
             {
-                throw new NoResultException("{$name_space} not found (TKTMD0002exc)");
+                throw new NoResultException("{$name_space} not found (ABSMD7009exc)");
             }
 
             return $obj;
