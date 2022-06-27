@@ -13,9 +13,7 @@ use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
 use Doctrine\ORM\NoResultException;
 use Siworks\Slim\Doctrine\Traits\Helpers\ObjectHelpers;
 use Siworks\Slim\Doctrine\Hydrator\Hydrator;
-use Doctrine\Common\Collections\ArrayCollection;
 use Ramsey\Uuid\Uuid as Uuid;
-use GeneratedHydrator\Configuration;
 use Doctrine\DBAL\Driver\PDOException;
 use Doctrine\ORM\EntityManager as EntityManager;
 use Doctrine\ORM\EntityRepository;
@@ -49,7 +47,7 @@ Abstract Class AbstractModel implements IModel
      * AbstractModel constructor.
      * @param EntityManager $entityManager
      */
-    public function __construct( EntityManager	$entityManager )
+    public function __construct( EntityManager	$entityManager)
     {
         $this->setEntityManager($entityManager);
         $this->setEntityName($this->repository->getClassName());
@@ -100,7 +98,9 @@ Abstract Class AbstractModel implements IModel
             $obj = $this->populateAssociation($this->getObj());
             $obj = $this->populateObject($obj);
 
-            return  $this->repository->save($obj);
+            $this->repository->save($obj);
+
+            return $obj;
         }
         catch (PDOException $e){
             throw new PDOException( "{$e->getMessage()} . (ABSMD-2001exc)", 2001);
@@ -212,7 +212,6 @@ Abstract Class AbstractModel implements IModel
                 $objData = $obj->toArray();
                 $this->setData(array_filter(array_merge($objData, $this->getData())));
             }
-
             $this->getHydrator()->hydrate($this->getData(), $obj);
             return $obj;
         }
@@ -251,7 +250,7 @@ Abstract Class AbstractModel implements IModel
     {
         try {
             $metaData = $this->entityManager->getClassMetadata(get_class($obj));
-
+            $data = [];
             foreach($this->getData() as $attr => $value)
             {
 
@@ -263,26 +262,32 @@ Abstract Class AbstractModel implements IModel
                     {
                         if(is_array($value)){
                             $newObj = new $association['targetEntity']();
-                            $objEntity = $this->getHydrator()->hydrate($value, $newObj);
-                        }else if(is_string($value) || is_integer($value)){
-                            $assocAttr = array_keys($association['targetToSourceKeyColumns']);
-                            $objEntity = $this->getData()[$attr] =  $this->entityManager->getRepository($association['targetEntity'])
-                                ->findOneBy(array($assocAttr[0] => $value));
+                            $data[$attr] = $this->getHydrator()->hydrate($value, $newObj);
+
+                        }else if(is_string($value) || is_integer($value)) {
+                            //$assocAttr = array_keys($association['targetToSourceKeyColumns']);
+                            $data[$attr] =  $this->entityManager->getRepository($association['targetEntity'])
+                                ->findOneBy(array("id" => $value));
                         }
                     }
                     else{
-
-                        $objEntity = $this->getData()[$attr] =  $this->entityManager->getRepository($association['targetEntity'])
-                            ->findBy(array("id" => $value));
+                        if(is_array($value)){
+                            $data[$attr] = $this->entityManager->getRepository($association['targetEntity'])
+                                ->findBy(array("id" => $value));
+                        }else{
+                            $data[$attr] = $this->entityManager->getRepository($association['targetEntity'])
+                                ->findOneBy(array("id" => $value));
+                        }
                     }
 
-                    if(is_null($objEntity) || count($objEntity) == 0){
+                    if(! isset($data[$attr]) || ! is_object($data[$attr]) ){
                         throw new InvalidArgumentException("{$attr}: ids are invalid (ABSMD-7007)", 7007);
                     }
 
-                    $this->getData()[$attr] = $objEntity;
                 }
             }
+            $this->setData(array_filter(array_merge($data, $this->getData())));
+            //$this->setData($data);
             return $obj;
         }
         catch(\Exception $e){
@@ -362,7 +367,7 @@ Abstract Class AbstractModel implements IModel
 
             if( ! $obj instanceof $name_space  )
             {
-                throw new NoResultException("{$name_space} not found (ABSMD7009exc)");
+                throw new NoResultException("{$name_space} not found (TKTMD0002exc)");
             }
 
             return $obj;

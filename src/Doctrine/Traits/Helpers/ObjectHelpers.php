@@ -55,18 +55,18 @@ trait ObjectHelpers
         return $arr;
     }
 
-    public function extractObject($obj = null, $depht = 2, $position = 0)
+    public function extractObject($obj = null, $depht = 1, $position = 0)
     {
 
         $obj = (is_null($obj)) ? $this : $obj;
         $arr = (is_object($obj)) ? $this->getHydrator()->extract($obj) : $obj;
 
         $res =[];
+
         foreach ($arr as $key => $val)
         {
             if(is_object($val))
             {
-
                 if($val instanceof \DateTime)
                 {
                     if($position > 0){
@@ -84,7 +84,6 @@ trait ObjectHelpers
                         foreach($val as $index => $value)
                         {
                             $res[$key][] = $value->extractObject($value, $depht, $controll);
-
                         }
                         $position = $position;
                     }
